@@ -1,6 +1,6 @@
 # zero-path.vim
 
-Provide Vim commands to copy path
+Provide Vim commands for copying path
 
 * CopyPath
 * CopyFullPath
