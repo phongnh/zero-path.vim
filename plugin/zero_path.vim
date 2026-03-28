@@ -1,15 +1,25 @@
-if exists('g:loaded_zero_path')
+" plugin/zero_path.vim - Copy path commands (Vim9script)
+" Maintainer:   Phong Nguyen
+
+if !has('vim9script') || has('nvim') || exists('g:loaded_zero_path')
     finish
 endif
-let g:loaded_zero_path = 1
 
-command! -bang CopyPath            call zero#path#CopyPath(<bang>0)
-command! -bang CopyFullPath        call zero#path#CopyFullPath(<bang>0)
-command! -bang CopyAbsolutePath    call zero#path#CopyAbsolutePath(<bang>0)
-command!       CopyDirPath         call zero#path#CopyDirPath()
-command!       CopyFullDirPath     call zero#path#CopyFullDirPath()
-command!       CopyAbsoluteDirPath call zero#path#CopyAbsoluteDirPath()
+vim9script
 
+g:loaded_zero_path = 1
+
+import autoload 'zero_path.vim' as ZeroPath
+
+# Commands
+command! -bang CopyPath            ZeroPath.CopyPath(<bang>0)
+command! -bang CopyFullPath        ZeroPath.CopyFullPath(<bang>0)
+command! -bang CopyAbsolutePath    ZeroPath.CopyAbsolutePath(<bang>0)
+command!       CopyDirPath         ZeroPath.CopyDirPath()
+command!       CopyFullDirPath     ZeroPath.CopyFullDirPath()
+command!       CopyAbsoluteDirPath ZeroPath.CopyAbsoluteDirPath()
+
+# Mappings
 if get(g:, 'zero_path_mappings', 1)
     nnoremap <silent> yc :CopyPath<CR>
     nnoremap <silent> yC :CopyPath!<CR>
