@@ -2,10 +2,6 @@
 " Maintainer:   Phong Nguyen
 " Version:      1.0.0
 
-" Save cpoptions
-let s:save_cpo = &cpoptions
-set cpoptions&vim
-
 " ============================================================================
 " Helper Functions
 " ============================================================================
@@ -65,7 +61,3 @@ endfunction
 function! zero_path#legacy#copy_absolute_dir_path() abort
     call s:copy_dir_path('%:p:h')
 endfunction
-
-" Restore cpoptions
-let &cpoptions = s:save_cpo
-unlet s:save_cpo
