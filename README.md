@@ -8,7 +8,7 @@ A Vim plugin to copy file and directory paths to the clipboard.
 - Copy relative, home-relative, or absolute path of the current file's directory
 - Optionally append the current line number to the copied path
 - Default key mappings for all commands
-- Works with legacy Vim, Vim9script, and Neovim (Lua)
+- Works with Vim and Neovim (Lua)
 
 ## Installation
 
@@ -59,8 +59,7 @@ The plugin ships all three implementations in a single repository and selects th
 
 | Implementation | File | Loaded when |
 |---|---|---|
-| Vim9script | `plugin/zero_path.vim` | Vim with `vim9script` support (Vim 9.0+) |
-| Legacy Vimscript | `plugin/zero_path_legacy.vim` | Vim without `vim9script` support (Vim 7.0+) |
+| Vimscript | `plugin/zero_path.vim` | Vim |
 | Lua | `plugin/zero_path.lua` | Neovim |
 
 ## License
