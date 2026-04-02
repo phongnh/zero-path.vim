@@ -1,4 +1,4 @@
--- plugin/require("zero_path").lua - Copy path commands (Neovim Lua)
+-- plugin/zero_path.lua - Copy path commands (Neovim Lua)
 -- Maintainer:   Phong Nguyen
 -- Version:      1.0.0
 
@@ -7,29 +7,34 @@ if vim.g.loaded_zero_path then
 end
 vim.g.loaded_zero_path = 1
 
+local zero_path = require("zero_path")
+
+-- Initialize with default settings
+zero_path.setup()
+
 -- Commands
 vim.api.nvim_create_user_command("CopyPath", function(opts)
-  require("zero_path").copy_path(opts.bang)
+  zero_path.copy_path(opts.bang)
 end, { bang = true })
 
 vim.api.nvim_create_user_command("CopyFullPath", function(opts)
-  require("zero_path").copy_full_path(opts.bang)
+  zero_path.copy_full_path(opts.bang)
 end, { bang = true })
 
 vim.api.nvim_create_user_command("CopyAbsolutePath", function(opts)
-  require("zero_path").copy_absolute_path(opts.bang)
+  zero_path.copy_absolute_path(opts.bang)
 end, { bang = true })
 
 vim.api.nvim_create_user_command("CopyDirPath", function(_)
-  require("zero_path").copy_dir_path()
+  zero_path.copy_dir_path()
 end, {})
 
 vim.api.nvim_create_user_command("CopyFullDirPath", function(_)
-  require("zero_path").copy_full_dir_path()
+  zero_path.copy_full_dir_path()
 end, {})
 
 vim.api.nvim_create_user_command("CopyAbsoluteDirPath", function(_)
-  require("zero_path").copy_absolute_dir_path()
+  zero_path.copy_absolute_dir_path()
 end, {})
 
 -- Mappings

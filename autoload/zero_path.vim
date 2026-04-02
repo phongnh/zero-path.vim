@@ -1,63 +1,64 @@
-" autoload/zero_path.vim - Core functionality
-" Maintainer:   Phong Nguyen
-" Version:      1.0.0
+vim9script
 
-" ============================================================================
-" Helper Functions
-" ============================================================================
+# autoload/zero_path.vim - Core functionality (Vim9script version)
+# Maintainer:   Phong Nguyen
 
-function! s:copy(path) abort
-    let @" = a:path
+# ============================================================================
+# Helper Functions
+# ============================================================================
+
+def Copy(path: string)
+    @" = path
     if has('clipboard')
-        let [@*, @+] = [@", @"]
+        [@*, @+] = [@", @"]
     endif
     echo 'Copied:' @"
-endfunction
+enddef
 
-function! s:expand_path(path, line_number) abort
-    let l:result = expand(a:path)
-    if a:line_number
-        let l:result .= ':' . line('.')
+def ExpandPath(path: string, line_number: bool): string
+    var result = expand(path)
+    if line_number
+        result ..= ':' .. line('.')
     endif
-    return l:result
-endfunction
+    return result
+enddef
 
-function! s:copy_path(path, line_number) abort
-    call s:copy(s:expand_path(a:path, a:line_number))
-endfunction
+def DoCopyPath(path: string, line_number: bool)
+    Copy(ExpandPath(path, line_number))
+enddef
 
-function! s:copy_dir_path(path) abort
-    let l:result = s:expand_path(a:path, 0)
-    if l:result == '.'
-        let l:result = fnamemodify(getcwd(), ':t')
+def DoCopyDirPath(path: string)
+    var result = ExpandPath(path, false)
+    if result == '.'
+        result = fnamemodify(getcwd(), ':t')
     endif
-    call s:copy(l:result)
-endfunction
+    Copy(result)
+enddef
 
-" ============================================================================
-" Public Functions
-" ============================================================================
+# ============================================================================
+# Exported Functions
+# ============================================================================
 
-function! zero_path#copy_path(line_number) abort
-    call s:copy_path('%:~:.', a:line_number)
-endfunction
+export def CopyPath(line_number: bool)
+    DoCopyPath('%:~:.', line_number)
+enddef
 
-function! zero_path#copy_full_path(line_number) abort
-    call s:copy_path('%:p:~', a:line_number)
-endfunction
+export def CopyFullPath(line_number: bool)
+    DoCopyPath('%:p:~', line_number)
+enddef
 
-function! zero_path#copy_absolute_path(line_number) abort
-    call s:copy_path('%:p', a:line_number)
-endfunction
+export def CopyAbsolutePath(line_number: bool)
+    DoCopyPath('%:p', line_number)
+enddef
 
-function! zero_path#copy_dir_path() abort
-    call s:copy_dir_path('%:p:.:h')
-endfunction
+export def CopyDirPath()
+    DoCopyDirPath('%:p:.:h')
+enddef
 
-function! zero_path#copy_full_dir_path() abort
-    call s:copy_dir_path('%:p:~:h')
-endfunction
+export def CopyFullDirPath()
+    DoCopyDirPath('%:p:~:h')
+enddef
 
-function! zero_path#copy_absolute_dir_path() abort
-    call s:copy_dir_path('%:p:h')
-endfunction
+export def CopyAbsoluteDirPath()
+    DoCopyDirPath('%:p:h')
+enddef
