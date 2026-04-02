@@ -59,8 +59,8 @@ The plugin ships all three implementations in a single repository and selects th
 
 | Implementation | File | Loaded when |
 |---|---|---|
-| Vim9script | `plugin/zero_path.vim` | Vim with `vim9script` support (Vim 9.0+) |
-| Legacy Vimscript | `plugin/zero_path_legacy.vim` | Vim without `vim9script` support (Vim 7.0+) |
+| Vim9script | `vim9/plugin/zero_path.vim` | Vim with `vim9script` support (Vim 9.0+) |
+| Legacy Vimscript | `plugin/zero_path.vim` | Vim without `vim9script` support (Vim 7.0+) |
 | Lua | `plugin/zero_path.lua` | Neovim |
 
 ## License

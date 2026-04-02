@@ -1,25 +1,38 @@
-" plugin/zero_path.vim - Copy path commands (Vim9script)
+" plugin/zero_path.vim - Copy path commands (legacy Vimscript)
 " Maintainer:   Phong Nguyen
+" Version:      1.0.0
 
-if !has('vim9script') || has('nvim') || exists('g:loaded_zero_path')
+if has('nvim') || exists('g:loaded_zero_path')
     finish
 endif
 
-vim9script
+" Use Vim9script implementation if available, otherwise fall back to legacy
+if has('vim9script')
+    " Add vim9/ subdirectory to runtimepath so vim9/autoload/zero_path.vim
+    " is found when the Vim9script plugin sources it via 'import autoload'
+    let s:vim9dir = fnamemodify(resolve(expand('<sfile>:p')), ':h:h') .. '/vim9'
+    if isdirectory(s:vim9dir) && index(split(&runtimepath, ','), s:vim9dir) < 0
+        execute 'set runtimepath^=' . fnameescape(s:vim9dir)
+    endif
+    source <sfile>:p:h:h/vim9/plugin/zero_path.vim
+    finish
+endif
 
-g:loaded_zero_path = 1
+let g:loaded_zero_path = 1
 
-import autoload 'zero_path.vim' as ZeroPath
+" Save cpoptions
+let s:save_cpo = &cpoptions
+set cpoptions&vim
 
-# Commands
-command! -bang CopyPath            ZeroPath.CopyPath(<bang>0)
-command! -bang CopyFullPath        ZeroPath.CopyFullPath(<bang>0)
-command! -bang CopyAbsolutePath    ZeroPath.CopyAbsolutePath(<bang>0)
-command!       CopyDirPath         ZeroPath.CopyDirPath()
-command!       CopyFullDirPath     ZeroPath.CopyFullDirPath()
-command!       CopyAbsoluteDirPath ZeroPath.CopyAbsoluteDirPath()
+" Commands
+command! -bang CopyPath            call zero_path#copy_path(<bang>0)
+command! -bang CopyFullPath        call zero_path#copy_full_path(<bang>0)
+command! -bang CopyAbsolutePath    call zero_path#copy_absolute_path(<bang>0)
+command!       CopyDirPath         call zero_path#copy_dir_path()
+command!       CopyFullDirPath     call zero_path#copy_full_dir_path()
+command!       CopyAbsoluteDirPath call zero_path#copy_absolute_dir_path()
 
-# Mappings
+" Mappings
 if get(g:, 'zero_path_mappings', 1)
     nnoremap <silent> yc :CopyPath<CR>
     nnoremap <silent> yC :CopyPath!<CR>
@@ -31,3 +44,7 @@ if get(g:, 'zero_path_mappings', 1)
     nnoremap <silent> yd :CopyFullDirPath<CR>
     nnoremap <silent> yD :CopyAbsoluteDirPath<CR>
 endif
+
+" Restore cpoptions
+let &cpoptions = s:save_cpo
+unlet s:save_cpo
